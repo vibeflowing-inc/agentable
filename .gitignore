@@ -1,0 +1,21 @@
+node_modules/
+dist/
+build/
+.next/
+coverage/
+
+# Env / secrets
+.env
+.env.*
+
+# Logs
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
