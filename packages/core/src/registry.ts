@@ -3,15 +3,27 @@ import type { RegisterActionOptions, ActionManifest, ActionManifestEntry } from 
 
 export class ActionRegistry {
   private actions = new Map<string, RegisterActionOptions<unknown>>()
+  private listeners = new Set<() => void>()
+
+  onChange(listener: () => void): () => void {
+    this.listeners.add(listener)
+    return () => this.listeners.delete(listener)
+  }
+
+  private notify() {
+    for (const listener of this.listeners) listener()
+  }
 
   register<T>(opts: RegisterActionOptions<T>): () => void {
     if (this.actions.has(opts.name)) {
       console.warn(`[agentable] Overwriting existing action: ${opts.name}`)
     }
     this.actions.set(opts.name, opts as RegisterActionOptions<unknown>)
+    this.notify()
 
     return () => {
       this.actions.delete(opts.name)
+      this.notify()
     }
   }
 

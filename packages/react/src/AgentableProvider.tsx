@@ -32,21 +32,28 @@ export function AgentableProvider({
   const mountedRef = useRef(true)
 
   const normalizedEndpoint = endpoint.endsWith('/') ? endpoint.slice(0, -1) : endpoint
+  const contextRef = useRef(context)
+  contextRef.current = context
 
   // ---------------------------------------------------------------------------
   // Manifest
   // ---------------------------------------------------------------------------
+  const pendingManifestPost = useRef<ReturnType<typeof setTimeout> | null>(null)
   const postManifest = useCallback(async () => {
-    try {
-      const manifest = registry.getManifest()
-      await fetch(`${normalizedEndpoint}/manifest`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(manifest),
-      })
-    } catch {
-      // Silently ignore — will retry on next registry change
-    }
+    if (pendingManifestPost.current !== null) return
+    pendingManifestPost.current = setTimeout(async () => {
+      pendingManifestPost.current = null
+      try {
+        const manifest = registry.getManifest()
+        await fetch(`${normalizedEndpoint}/manifest`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(manifest),
+        })
+      } catch {
+        // Silently ignore — will retry on next registry change
+      }
+    }, 50)
   }, [registry, normalizedEndpoint])
 
   // Post manifest on mount
@@ -59,17 +66,9 @@ export function AgentableProvider({
     }
   }, [postManifest])
 
-  // Re-post manifest whenever registry size changes (new actions registered/unregistered)
-  const registrySizeRef = useRef(registry.size)
+  // Re-post manifest whenever the registry changes (new actions registered/unregistered)
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (registry.size !== registrySizeRef.current) {
-        console.log('[agentable] Registry size changed:', registrySizeRef.current, '->', registry.size, 'posting manifest')
-        registrySizeRef.current = registry.size
-        postManifest()
-      }
-    }, 200)
-    return () => clearInterval(interval)
+    return registry.onChange(() => postManifest())
   }, [registry, postManifest])
 
   // ---------------------------------------------------------------------------
@@ -123,7 +122,7 @@ export function AgentableProvider({
         result = await callAction(registry, {
           name: call.name,
           params: call.params,
-          context,
+          context: contextRef.current,
           requestConfirmation: (name, params) =>
             requestConfirmation(name, params, call.callId),
         })
@@ -135,7 +134,7 @@ export function AgentableProvider({
       }
       await postResult(call.callId, result)
     },
-    [registry, context, requestConfirmation, postResult],
+    [registry, requestConfirmation, postResult],
   )
 
   /**
