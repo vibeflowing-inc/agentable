@@ -129,3 +129,6 @@ export function createAgentable(opts: AgentableServerOptions = {}): AgentableSer
 
   return { handler, dispatch, getManifest }
 }
+
+// Re-export express adapter from main entry so CommonJS moduleResolution works
+export { expressHandler } from './adapters/express.js'

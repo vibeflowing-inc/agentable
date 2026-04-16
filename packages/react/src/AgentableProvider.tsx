@@ -52,6 +52,7 @@ export function AgentableProvider({
   // Post manifest on mount
   useEffect(() => {
     mountedRef.current = true
+    console.log('[agentable] Provider mounted, posting initial manifest, registry.size=', registry.size)
     postManifest()
     return () => {
       mountedRef.current = false
@@ -63,6 +64,7 @@ export function AgentableProvider({
   useEffect(() => {
     const interval = setInterval(() => {
       if (registry.size !== registrySizeRef.current) {
+        console.log('[agentable] Registry size changed:', registrySizeRef.current, '->', registry.size, 'posting manifest')
         registrySizeRef.current = registry.size
         postManifest()
       }

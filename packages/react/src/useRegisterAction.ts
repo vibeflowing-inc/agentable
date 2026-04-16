@@ -9,7 +9,13 @@ export function useRegisterAction<T>(
   const { registry } = useAgentable()
 
   useEffect(() => {
-    return registry.register(opts)
+    console.log('[agentable] Registering action:', opts.name, 'registry.size before=', registry.size)
+    const unregister = registry.register(opts)
+    console.log('[agentable] Registered action:', opts.name, 'registry.size after=', registry.size)
+    return () => {
+      console.log('[agentable] Unregistering action:', opts.name)
+      unregister()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
 }

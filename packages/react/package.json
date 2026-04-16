@@ -13,8 +13,8 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "dev": "tsup src/index.ts --format esm,cjs --dts --watch"
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react --external react-dom --external @agentable/core",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react --external react-dom --external @agentable/core"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
