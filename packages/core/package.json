@@ -1,6 +1,6 @@
 {
   "name": "@vibeflowai/agentable-core",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Framework-agnostic action registry and dispatcher for Agentable.",
   "license": "MIT",
   "repository": {
@@ -12,12 +12,20 @@
   "bugs": {
     "url": "https://github.com/vibeflowing-inc/agentable/issues"
   },
-  "keywords": ["agentable", "ai", "tool-calling", "actions", "zod"],
+  "keywords": [
+    "agentable",
+    "ai",
+    "tool-calling",
+    "actions",
+    "zod"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "publishConfig": {
     "access": "public"

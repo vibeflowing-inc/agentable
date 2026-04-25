@@ -1,6 +1,6 @@
 {
   "name": "@vibeflowai/agentable-server",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "HTTP bridge for Agentable with Express and Next.js adapters.",
   "license": "MIT",
   "repository": {
