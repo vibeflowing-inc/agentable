@@ -2,7 +2,10 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import type { AgentableServer } from '@vibeflowai/agentable-server'
 
-export function toVercelAITools(agentable: AgentableServer) {
+export function toVercelAITools(agentable: AgentableServer): {
+  discoverActions: unknown
+  callAction: unknown
+} {
   return {
     discoverActions: tool({
       description:

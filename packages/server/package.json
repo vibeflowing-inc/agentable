@@ -1,6 +1,6 @@
 {
   "name": "@vibeflowai/agentable-server",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "HTTP bridge for Agentable with Express and Next.js adapters.",
   "license": "MIT",
   "repository": {
@@ -44,12 +44,12 @@
     "dev": "tsup src/index.ts src/adapters/express.ts src/adapters/nextjs.ts --format esm,cjs --dts --watch"
   },
   "dependencies": {
-    "@vibeflowai/agentable-core": "workspace:*"
+    "@vibeflowai/agentable-core": "^0.1.2"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
-    "@vibeflowai/agentable-core": "workspace:*",
+    "@vibeflowai/agentable-core": "^0.1.2",
     "@types/express": "^4.17.0"
   }
 }
