@@ -1,7 +1,7 @@
 # Agentable
 
 [![Experimental](https://img.shields.io/badge/status-experimental-orange)](#experimental-status)
-[![npm version](https://img.shields.io/npm/v/@agentable/core.svg)](https://www.npmjs.com/package/@agentable/core)
+[![npm version](https://img.shields.io/npm/v/@vibeflowai/agentable-core.svg)](https://www.npmjs.com/package/@vibeflowai/agentable-core)
 [![GitHub stars](https://img.shields.io/github/stars/saquand/agentable?style=flat)](https://github.com/saquand/agentable/stargazers)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Join Discord](https://img.shields.io/badge/Join-Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/vibeflow)
@@ -28,10 +28,10 @@ AI agents that can "use your app" usually force you to build and maintain a sepa
 
 ```bash
 # npm
-npm install @agentable/core @agentable/react @agentable/server zod
+npm install @vibeflowai/agentable-core @vibeflowai/agentable-react @vibeflowai/agentable-server zod
 
 # pnpm
-pnpm add @agentable/core @agentable/react @agentable/server zod
+pnpm add @vibeflowai/agentable-core @vibeflowai/agentable-react @vibeflowai/agentable-server zod
 ```
 
 ## How It Works
@@ -43,9 +43,9 @@ pnpm add @agentable/core @agentable/react @agentable/server zod
      │  callAction(name, params) →  GET  /agentable/pending   (frontend polls)
      │                           ←  POST /agentable/result    (frontend posts back)
      ▼
-  @agentable/server  ←────────────────────────────────────────────────────────────┐
+  @vibeflowai/agentable-server  ←────────────────────────────────────────────────────────────┐
   (your backend)                                                                   │
-                               @agentable/react                                   │
+                               @vibeflowai/agentable-react                                   │
                                (AgentableProvider)  →  useRegisterAction          │
                                polls /pending            (inside your components) │
                                posts /result  ──────────────────────────────────→─┘
@@ -64,7 +64,7 @@ pnpm add @agentable/core @agentable/react @agentable/server zod
 
 ```ts
 import express from 'express'
-import { createAgentable, expressHandler } from '@agentable/server'
+import { createAgentable, expressHandler } from '@vibeflowai/agentable-server'
 
 const app = express()
 app.use(express.json())
@@ -78,7 +78,7 @@ app.listen(3001)
 **Next.js App Router** (`app/agentable/[...path]/route.ts`)
 
 ```ts
-import { createAgentable, nextHandler } from '@agentable/server'
+import { createAgentable, nextHandler } from '@vibeflowai/agentable-server'
 
 export const agentable = createAgentable()
 
@@ -91,7 +91,7 @@ export const OPTIONS = handle
 ### 2) Wrap your React app
 
 ```tsx
-import { AgentableProvider } from '@agentable/react'
+import { AgentableProvider } from '@vibeflowai/agentable-react'
 
 export default function App() {
   return (
@@ -105,7 +105,7 @@ export default function App() {
 ### 3) Register actions inside your components
 
 ```tsx
-import { useRegisterAction } from '@agentable/react'
+import { useRegisterAction } from '@vibeflowai/agentable-react'
 import { z } from 'zod'
 
 function Counter() {
@@ -136,11 +136,11 @@ The agent can now discover and call `counter.increment`.
 **Vercel AI SDK**
 
 ```bash
-npm install @agentable/adapter-vercel-ai
+npm install @vibeflowai/agentable-adapter-vercel-ai
 ```
 
 ```ts
-import { toVercelAITools } from '@agentable/adapter-vercel-ai'
+import { toVercelAITools } from '@vibeflowai/agentable-adapter-vercel-ai'
 import { streamText } from 'ai'
 import { openai } from '@ai-sdk/openai'
 
@@ -166,7 +166,7 @@ const result = await agentable.dispatch('counter.increment', { amount: 5 })
 Mark destructive or irreversible actions with `requiresConfirmation: true`. `dispatch()` blocks until the user approves or rejects.
 
 ```tsx
-import { useRegisterAction, ConfirmationDialog } from '@agentable/react'
+import { useRegisterAction, ConfirmationDialog } from '@vibeflowai/agentable-react'
 
 function DataTable() {
   const [rows, setRows] = useState(initialRows)
@@ -213,7 +213,7 @@ If approved, it resolves with `{ status: 'success', result: ... }`.
 
 ## API Reference
 
-### `@agentable/server`
+### `@vibeflowai/agentable-server`
 
 #### `createAgentable(options?)`
 
@@ -246,7 +246,7 @@ export const POST = handle
 export const OPTIONS = handle
 ```
 
-### `@agentable/react`
+### `@vibeflowai/agentable-react`
 
 #### `<AgentableProvider>`
 
@@ -298,9 +298,9 @@ Must be called inside `<AgentableProvider>`.
 }
 ```
 
-### `@agentable/core`
+### `@vibeflowai/agentable-core`
 
-Framework-agnostic primitives used internally by `@agentable/react` and `@agentable/server`.
+Framework-agnostic primitives used internally by `@vibeflowai/agentable-react` and `@vibeflowai/agentable-server`.
 
 #### `ActionRegistry`
 
@@ -329,7 +329,7 @@ const result = await callAction(registry, {
 // { status: 'error', message: string }
 ```
 
-### `@agentable/adapter-vercel-ai`
+### `@vibeflowai/agentable-adapter-vercel-ai`
 
 #### `toVercelAITools(agentable)`
 
@@ -352,10 +352,10 @@ const result = await streamText({
 
 | Package | Description |
 | --- | --- |
-| [`@agentable/core`](./packages/core) | Action registry and dispatcher |
-| [`@agentable/react`](./packages/react) | React provider, hooks, confirmation dialog |
-| [`@agentable/server`](./packages/server) | HTTP bridge for Express and Next.js |
-| [`@agentable/adapter-vercel-ai`](./packages/adapter-vercel-ai) | Vercel AI SDK adapter |
+| [`@vibeflowai/agentable-core`](./packages/core) | Action registry and dispatcher |
+| [`@vibeflowai/agentable-react`](./packages/react) | React provider, hooks, confirmation dialog |
+| [`@vibeflowai/agentable-server`](./packages/server) | HTTP bridge for Express and Next.js |
+| [`@vibeflowai/agentable-adapter-vercel-ai`](./packages/adapter-vercel-ai) | Vercel AI SDK adapter |
 
 ## Examples
 

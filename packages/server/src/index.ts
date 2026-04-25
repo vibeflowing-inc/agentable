@@ -1,4 +1,4 @@
-import type { ActionManifest } from '@agentable/core'
+import type { ActionManifest } from '@vibeflowai/agentable-core'
 
 export interface AgentableServerOptions {
   timeoutMs?: number

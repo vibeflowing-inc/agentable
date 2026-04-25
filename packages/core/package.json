@@ -1,5 +1,5 @@
 {
-  "name": "@agentable/core",
+  "name": "@vibeflowai/agentable-core",
   "version": "0.1.0",
   "description": "Framework-agnostic action registry and dispatcher for Agentable.",
   "license": "MIT",

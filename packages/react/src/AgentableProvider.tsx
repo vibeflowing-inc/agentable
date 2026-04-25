@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ActionRegistry, callAction } from '@agentable/core'
-import type { ActionContext } from '@agentable/core'
+import { ActionRegistry, callAction } from '@vibeflowai/agentable-core'
+import type { ActionContext } from '@vibeflowai/agentable-core'
 import { AgentableContext } from './context.js'
 import type { PendingConfirmation } from './context.js'
 

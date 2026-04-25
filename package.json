@@ -1,8 +1,28 @@
 {
   "name": "agentable",
+  "version": "0.1.0",
+  "description": "Put your app in any AI by registering actions directly in React components.",
   "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saquand/agentable.git"
+  },
+  "homepage": "https://github.com/saquand/agentable",
+  "bugs": {
+    "url": "https://github.com/saquand/agentable/issues"
+  },
+  "packageManager": "pnpm@10.6.2",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
   "scripts": {
     "build": "pnpm -r build",
-    "dev": "pnpm -r --parallel dev"
+    "dev": "pnpm -r --parallel dev",
+    "clean": "pnpm -r exec rm -rf dist"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }

@@ -6,8 +6,8 @@
  *
  * Usage in app/agentable/[...path]/route.ts:
  *
- *   import { createAgentable } from '@agentable/server'
- *   import { nextjsHandler } from '@agentable/server/adapters/nextjs'
+ *   import { createAgentable } from '@vibeflowai/agentable-server'
+ *   import { nextjsHandler } from '@vibeflowai/agentable-server/adapters/nextjs'
  *
  *   const agentable = createAgentable()
  *

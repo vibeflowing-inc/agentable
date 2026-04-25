@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { RegisterActionOptions } from '@agentable/core'
+import type { RegisterActionOptions } from '@vibeflowai/agentable-core'
 import { useAgentable } from './useAgentable.js'
 
 export function useRegisterAction<T>(

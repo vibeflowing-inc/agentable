@@ -1,5 +1,5 @@
 {
-  "name": "@agentable/adapter-vercel-ai",
+  "name": "@vibeflowai/agentable-adapter-vercel-ai",
   "version": "0.1.0",
   "description": "Vercel AI SDK adapter that exposes discoverActions and callAction.",
   "license": "MIT",
@@ -35,14 +35,14 @@
   },
   "peerDependencies": {
     "ai": ">=4.0.0",
-    "@agentable/server": "^0.1.0",
+    "@vibeflowai/agentable-server": "^0.1.0",
     "zod": ">=3.0.0"
   },
   "devDependencies": {
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
     "ai": "^4.0.0",
-    "@agentable/server": "workspace:*",
+    "@vibeflowai/agentable-server": "workspace:*",
     "zod": "^3.22.0"
   }
 }

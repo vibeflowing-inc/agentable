@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import type { ActionRegistry } from '@agentable/core'
+import type { ActionRegistry } from '@vibeflowai/agentable-core'
 
 export interface PendingConfirmation {
   callId: string

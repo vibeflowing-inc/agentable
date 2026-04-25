@@ -26,9 +26,9 @@ export function expressHandler(agentable: AgentableServer) {
         body = JSON.stringify(req.body)
         headers['content-type'] = 'application/json'
       } else {
-        const bodyChunks: Buffer[] = []
+        const bodyChunks: Uint8Array[] = []
         await new Promise<void>((resolve, reject) => {
-          req.on('data', (chunk: Buffer) => bodyChunks.push(chunk))
+          req.on('data', (chunk: Uint8Array) => bodyChunks.push(chunk))
           req.on('end', resolve)
           req.on('error', reject)
         })

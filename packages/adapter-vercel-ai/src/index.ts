@@ -1,6 +1,6 @@
 import { tool } from 'ai'
 import { z } from 'zod'
-import type { AgentableServer } from '@agentable/server'
+import type { AgentableServer } from '@vibeflowai/agentable-server'
 
 export function toVercelAITools(agentable: AgentableServer) {
   return {

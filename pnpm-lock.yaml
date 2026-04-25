@@ -10,13 +10,13 @@ importers:
 
   examples/express-react:
     dependencies:
-      '@agentable/core':
+      '@vibeflowai/agentable-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@agentable/react':
+      '@vibeflowai/agentable-react':
         specifier: workspace:*
         version: link:../../packages/react
-      '@agentable/server':
+      '@vibeflowai/agentable-server':
         specifier: workspace:*
         version: link:../../packages/server
       express:
@@ -50,7 +50,7 @@ importers:
 
   packages/adapter-vercel-ai:
     devDependencies:
-      '@agentable/server':
+      '@vibeflowai/agentable-server':
         specifier: workspace:*
         version: link:../server
       ai:
@@ -84,15 +84,15 @@ importers:
 
   packages/react:
     devDependencies:
-      '@agentable/core':
-        specifier: workspace:*
-        version: link:../core
       '@types/react':
         specifier: ^18.0.0
         version: 18.3.28
       '@types/react-dom':
         specifier: ^18.0.0
         version: 18.3.7(@types/react@18.3.28)
+      '@vibeflowai/agentable-core':
+        specifier: workspace:*
+        version: link:../core
       react:
         specifier: ^18.0.0
         version: 18.3.1
@@ -111,7 +111,7 @@ importers:
 
   packages/server:
     dependencies:
-      '@agentable/core':
+      '@vibeflowai/agentable-core':
         specifier: workspace:*
         version: link:../core
     devDependencies:

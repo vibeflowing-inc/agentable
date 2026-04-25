@@ -1,5 +1,5 @@
 {
-  "name": "@agentable/react",
+  "name": "@vibeflowai/agentable-react",
   "version": "0.1.0",
   "description": "React provider and hooks to register and execute Agentable actions.",
   "license": "MIT",
@@ -30,17 +30,17 @@
     }
   },
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react --external react-dom --external @agentable/core",
-    "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react --external react-dom --external @agentable/core"
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean --external react --external react-dom --external @vibeflowai/agentable-core",
+    "dev": "tsup src/index.ts --format esm,cjs --dts --watch --external react --external react-dom --external @vibeflowai/agentable-core"
   },
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@agentable/core": "^0.1.0",
+    "@vibeflowai/agentable-core": "^0.1.0",
     "zod": ">=3.0.0"
   },
   "devDependencies": {
-    "@agentable/core": "workspace:*",
+    "@vibeflowai/agentable-core": "workspace:*",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "tsup": "^8.0.0",
