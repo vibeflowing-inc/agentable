@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { z } from 'zod'
-import { AgentableProvider, useRegisterAction, ConfirmationDialog } from '@agentable/react'
+import { AgentableProvider, useRegisterAction, ConfirmationDialog } from '@vibeflowai/agentable-react'
 
 // ---------------------------------------------------------------------------
 // Counter component — registers two actions on the global agentable registry

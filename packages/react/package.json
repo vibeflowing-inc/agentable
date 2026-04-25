@@ -1,6 +1,6 @@
 {
   "name": "@vibeflowai/agentable-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "React provider and hooks to register and execute Agentable actions.",
   "license": "MIT",
   "repository": {
@@ -36,7 +36,7 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@vibeflowai/agentable-core": "^0.1.0",
+    "@vibeflowai/agentable-core": "^0.1.1",
     "zod": ">=3.0.0"
   },
   "devDependencies": {

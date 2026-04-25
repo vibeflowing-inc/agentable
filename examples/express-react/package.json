@@ -7,9 +7,9 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@agentable/server": "workspace:*",
-    "@agentable/react": "workspace:*",
-    "@agentable/core": "workspace:*",
+    "@vibeflowai/agentable-server": "workspace:*",
+    "@vibeflowai/agentable-react": "workspace:*",
+    "@vibeflowai/agentable-core": "workspace:*",
     "express": "^4.18.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
