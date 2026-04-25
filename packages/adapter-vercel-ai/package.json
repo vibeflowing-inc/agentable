@@ -5,12 +5,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/saquand/agentable.git",
+    "url": "git+https://github.com/vibeflowing-inc/agentable.git",
     "directory": "packages/adapter-vercel-ai"
   },
-  "homepage": "https://github.com/saquand/agentable#readme",
+  "homepage": "https://github.com/vibeflowing-inc/agentable#readme",
   "bugs": {
-    "url": "https://github.com/saquand/agentable/issues"
+    "url": "https://github.com/vibeflowing-inc/agentable/issues"
   },
   "keywords": ["agentable", "vercel-ai-sdk", "ai", "tool-calling", "adapter"],
   "type": "module",
