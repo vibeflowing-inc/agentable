@@ -1,23 +1,37 @@
-# agentable
+# Agentable
+
+Put your app in any AI. Register actions where they already live, no refactoring needed.
+
+Want to skip setup? Start from the ready-to-run [`examples/express-react`](./examples/express-react) app and test the full round-trip in minutes.
 
 [![npm version](https://img.shields.io/npm/v/@agentable/core.svg)](https://www.npmjs.com/package/@agentable/core)
+[![GitHub stars](https://img.shields.io/github/stars/saquand/agentable?style=flat)](https://github.com/saquand/agentable/stargazers)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![Join Discord](https://img.shields.io/badge/Join-Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/vibeflow)
 
-> Put your app in any AI. Register actions where they already live — no refactoring needed.
+AI agents that can "use your app" usually force you to build and maintain a separate tool layer. Agentable flips that model: register actions directly inside your React components, right next to the state they control. The agent only needs two tools, `discoverActions` and `callAction`.
 
----
+## Features
 
-## The problem
+- React-native action registration with direct state and closure access.
+- Minimal agent interface: `discoverActions` + `callAction`.
+- Built-in server bridge for Express and Next.js App Router.
+- Optional user confirmation flow for destructive actions.
+- Vercel AI SDK adapter plus framework-agnostic `dispatch()` usage.
 
-AI agents that can "use your app" typically require you to build a separate tool layer — duplicating business logic, maintaining two sources of truth, and wiring up a whole new API surface. The result is a parallel codebase nobody asked for.
+## Install
 
-Agentable inverts this. You register actions **inside your React components**, right next to the state they control. The agent gets two tools: `discoverActions` and `callAction`. That's the entire interface.
+```bash
+# npm
+npm install @agentable/core @agentable/react @agentable/server zod
 
----
-
-## How it works
-
+# pnpm
+pnpm add @agentable/core @agentable/react @agentable/server zod
 ```
+
+## How It Works
+
+```text
   AI Agent
      │
      │  discoverActions()        →  GET  /agentable/manifest
@@ -33,27 +47,13 @@ Agentable inverts this. You register actions **inside your React components**, r
 ```
 
 1. `AgentableProvider` mounts in your React app and POSTs an action manifest to the server.
-2. Your backend agent calls `agentable.dispatch('action.name', params)` — this queues the call server-side.
-3. The React provider polls `GET /agentable/pending`, picks up the call, runs the matching handler (which has direct access to your React state and closures), and POSTs the result back.
-4. `dispatch()` resolves with the handler's return value. The agent sees it.
+2. Your backend agent calls `agentable.dispatch('action.name', params)` to queue an action call.
+3. The React provider polls `GET /agentable/pending`, executes the matching handler in your component context, then POSTs the result.
+4. `dispatch()` resolves with that handler result.
 
----
+## Quick Start
 
-## Installation
-
-```bash
-# npm
-npm install @agentable/core @agentable/react @agentable/server zod
-
-# pnpm
-pnpm add @agentable/core @agentable/react @agentable/server zod
-```
-
----
-
-## Quick start
-
-### 1. Create the server bridge
+### 1) Create the server bridge
 
 **Express**
 
@@ -70,7 +70,7 @@ app.use('/agentable', expressHandler(agentable))
 app.listen(3001)
 ```
 
-**Next.js App Router** — create `app/agentable/[...path]/route.ts`:
+**Next.js App Router** (`app/agentable/[...path]/route.ts`)
 
 ```ts
 import { createAgentable, nextHandler } from '@agentable/server'
@@ -83,7 +83,7 @@ export const POST = handle
 export const OPTIONS = handle
 ```
 
-### 2. Wrap your React app
+### 2) Wrap your React app
 
 ```tsx
 import { AgentableProvider } from '@agentable/react'
@@ -97,7 +97,7 @@ export default function App() {
 }
 ```
 
-### 3. Register actions inside your components
+### 3) Register actions inside your components
 
 ```tsx
 import { useRegisterAction } from '@agentable/react'
@@ -106,16 +106,19 @@ import { z } from 'zod'
 function Counter() {
   const [count, setCount] = useState(0)
 
-  useRegisterAction({
-    name: 'counter.increment',
-    description: 'Increment the counter by a given amount.',
-    schema: z.object({ amount: z.number().int().min(1).default(1) }),
-    handler: async ({ amount }) => {
-      const newCount = count + amount
-      setCount(newCount)
-      return { newCount }
+  useRegisterAction(
+    {
+      name: 'counter.increment',
+      description: 'Increment the counter by a given amount.',
+      schema: z.object({ amount: z.number().int().min(1).default(1) }),
+      handler: async ({ amount }) => {
+        const newCount = count + amount
+        setCount(newCount)
+        return { newCount }
+      },
     },
-  }, [count])
+    [count]
+  )
 
   return <div>Count: {count}</div>
 }
@@ -123,7 +126,7 @@ function Counter() {
 
 The agent can now discover and call `counter.increment`.
 
-### 4. Connect your LLM
+### 4) Connect your LLM
 
 **Vercel AI SDK**
 
@@ -145,7 +148,7 @@ const result = await streamText({
 })
 ```
 
-**Any other LLM or framework** — call `agentable.dispatch()` directly from your tool handler:
+**Any other framework**
 
 ```ts
 // Inside your tool implementation
@@ -153,11 +156,9 @@ const result = await agentable.dispatch('counter.increment', { amount: 5 })
 // resolves when the frontend executes the action
 ```
 
----
+## Confirmation Dialogs
 
-## Confirmation dialogs
-
-Mark actions with `requiresConfirmation: true` when they are destructive or irreversible. The agent's `dispatch()` call will block until the user approves or rejects — giving users control over what the AI is allowed to do.
+Mark destructive or irreversible actions with `requiresConfirmation: true`. `dispatch()` blocks until the user approves or rejects.
 
 ```tsx
 import { useRegisterAction, ConfirmationDialog } from '@agentable/react'
@@ -165,16 +166,19 @@ import { useRegisterAction, ConfirmationDialog } from '@agentable/react'
 function DataTable() {
   const [rows, setRows] = useState(initialRows)
 
-  useRegisterAction({
-    name: 'table.deleteAll',
-    description: 'Delete all rows from the table.',
-    schema: z.object({}),
-    requiresConfirmation: true,
-    handler: async () => {
-      setRows([])
-      return { deleted: true }
+  useRegisterAction(
+    {
+      name: 'table.deleteAll',
+      description: 'Delete all rows from the table.',
+      schema: z.object({}),
+      requiresConfirmation: true,
+      handler: async () => {
+        setRows([])
+        return { deleted: true }
+      },
     },
-  }, [])
+    []
+  )
 
   return (
     <>
@@ -183,7 +187,9 @@ function DataTable() {
       <ConfirmationDialog
         render={({ actionName, params, onApprove, onReject }) => (
           <div className="dialog">
-            <p>Allow AI to run <strong>{actionName}</strong>?</p>
+            <p>
+              Allow AI to run <strong>{actionName}</strong>?
+            </p>
             {Object.keys(params).length > 0 && (
               <pre>{JSON.stringify(params, null, 2)}</pre>
             )}
@@ -197,11 +203,10 @@ function DataTable() {
 }
 ```
 
-If the user denies, `dispatch()` resolves with `{ status: 'rejected' }`. If they approve, the handler runs and `dispatch()` resolves with `{ status: 'success', result: ... }`.
+If the user denies, `dispatch()` resolves with `{ status: 'rejected' }`.  
+If approved, it resolves with `{ status: 'success', result: ... }`.
 
----
-
-## API reference
+## API Reference
 
 ### `@agentable/server`
 
@@ -209,29 +214,25 @@ If the user denies, `dispatch()` resolves with `{ status: 'rejected' }`. If they
 
 ```ts
 createAgentable({
-  timeoutMs?: number  // default: 30_000 — how long dispatch() waits for a result
+  timeoutMs?: number // default: 30_000
 })
 ```
 
-Returns an `AgentableServer`:
+Returns an `AgentableServer` with:
 
 | Method | Description |
-|---|---|
-| `handler(req)` | Web API request handler — pass to your framework adapter |
-| `dispatch(name, params)` | Queue an action call. Returns a Promise that resolves with the handler's return value |
-| `getManifest()` | Returns the current action manifest, or `null` if the frontend hasn't connected |
+| --- | --- |
+| `handler(req)` | Web API request handler for framework adapters |
+| `dispatch(name, params)` | Queue an action and await the frontend result |
+| `getManifest()` | Get current action manifest, or `null` before frontend connect |
 
 #### `expressHandler(agentable)`
-
-Express middleware. Mount it at the path your `AgentableProvider` endpoint points to.
 
 ```ts
 app.use('/agentable', expressHandler(agentable))
 ```
 
 #### `nextHandler(agentable)`
-
-Next.js App Router adapter. Returns the handler directly (Next.js already uses Web API).
 
 ```ts
 const handle = nextHandler(agentable)
@@ -240,17 +241,15 @@ export const POST = handle
 export const OPTIONS = handle
 ```
 
----
-
 ### `@agentable/react`
 
 #### `<AgentableProvider>`
 
 ```tsx
 <AgentableProvider
-  endpoint="http://localhost:3001/agentable"  // required
-  pollInterval={500}                          // optional, ms — default 500
-  context={{ userId, sessionId }}             // optional — passed to every handler
+  endpoint="http://localhost:3001/agentable" // required
+  pollInterval={500} // optional, default 500ms
+  context={{ userId, sessionId }} // optional, passed to every handler
 >
 ```
 
@@ -258,33 +257,32 @@ export const OPTIONS = handle
 
 ```ts
 useRegisterAction({
-  name: string               // unique identifier, e.g. 'modal.open'
-  description: string        // shown to the agent — be specific
-  schema: ZodObject          // validates params before handler is called
-  requiresConfirmation?:     // default false — block until user approves
-  handler: (params) =>       // runs inside React — has access to state/closures
-    Promise<unknown>
-}, deps?)                    // dependency array, same semantics as useEffect
+  name: string
+  description: string
+  schema: ZodObject
+  requiresConfirmation?: boolean
+  handler: (params) => Promise<unknown>
+}, deps?)
 ```
 
-The action is automatically unregistered when the component unmounts or deps change.
+Actions auto-unregister on unmount or dependency changes.
 
 #### `useAgentable()`
 
 ```ts
 const {
-  registry,             // ActionRegistry instance
-  pendingConfirmation,  // { callId, name, params } | null
-  resolvePending,       // (callId, approved: boolean) => void
-  executeAction,        // (callId, name, params) => Promise<void>
+  registry,
+  pendingConfirmation, // { callId, name, params } | null
+  resolvePending, // (callId, approved: boolean) => void
+  executeAction, // (callId, name, params) => Promise<void>
 } = useAgentable()
 ```
 
-Must be used inside `<AgentableProvider>`.
+Must be called inside `<AgentableProvider>`.
 
 #### `<ConfirmationDialog render={...} />`
 
-Renders nothing when no confirmation is pending. Calls `render` with:
+`render` receives:
 
 ```ts
 {
@@ -295,23 +293,21 @@ Renders nothing when no confirmation is pending. Calls `render` with:
 }
 ```
 
----
-
 ### `@agentable/core`
 
-The framework-agnostic core. You typically don't need this directly — `@agentable/react` and `@agentable/server` use it internally.
+Framework-agnostic primitives used internally by `@agentable/react` and `@agentable/server`.
 
 #### `ActionRegistry`
 
 ```ts
 const registry = new ActionRegistry()
 
-registry.register(opts)       // returns unregister function
-registry.get(name)            // → RegisterActionOptions | undefined
-registry.has(name)            // → boolean
-registry.size                 // → number
-registry.getManifest()        // → ActionManifest (JSON Schema)
-registry.onChange(listener)   // subscribe to register/unregister events, returns unsubscribe fn
+registry.register(opts)
+registry.get(name)
+registry.has(name)
+registry.size
+registry.getManifest()
+registry.onChange(listener)
 ```
 
 #### `callAction(registry, opts)`
@@ -323,21 +319,19 @@ const result = await callAction(registry, {
   context?: ActionContext
   requestConfirmation?: (name, params) => Promise<boolean>
 })
-// → { status: 'success', result: unknown }
-// → { status: 'rejected' }
-// → { status: 'error', message: string }
+// { status: 'success', result: unknown }
+// { status: 'rejected' }
+// { status: 'error', message: string }
 ```
-
----
 
 ### `@agentable/adapter-vercel-ai`
 
 #### `toVercelAITools(agentable)`
 
-Returns two Vercel AI SDK tools:
+Returns:
 
-- **`discoverActions`** — no parameters, returns the manifest
-- **`callAction`** — `{ name: string, params: Record<string, unknown> }`, calls `dispatch()`
+- `discoverActions` (no params, returns manifest)
+- `callAction` (`{ name, params }`, dispatches an action call)
 
 ```ts
 const { discoverActions, callAction } = toVercelAITools(agentable)
@@ -349,25 +343,19 @@ const result = await streamText({
 })
 ```
 
----
-
 ## Packages
 
 | Package | Description |
-|---|---|
-| [`@agentable/core`](./packages/core) | Action registry and dispatcher — framework agnostic |
-| [`@agentable/react`](./packages/react) | React provider, `useRegisterAction` hook, confirmation dialog |
-| [`@agentable/server`](./packages/server) | HTTP bridge with Express and Next.js adapters |
-| [`@agentable/adapter-vercel-ai`](./packages/adapter-vercel-ai) | Vercel AI SDK tools: `discoverActions` + `callAction` |
-
----
+| --- | --- |
+| [`@agentable/core`](./packages/core) | Action registry and dispatcher |
+| [`@agentable/react`](./packages/react) | React provider, hooks, confirmation dialog |
+| [`@agentable/server`](./packages/server) | HTTP bridge for Express and Next.js |
+| [`@agentable/adapter-vercel-ai`](./packages/adapter-vercel-ai) | Vercel AI SDK adapter |
 
 ## Examples
 
-- [`examples/express-react`](./examples/express-react) — full round-trip with Express + React + mock agent
-
----
+- [`examples/express-react`](./examples/express-react): full round-trip with Express, React, and a mock agent.
 
 ## License
 
-MIT — see [LICENSE](./LICENSE)
+MIT. See [LICENSE](./LICENSE).
