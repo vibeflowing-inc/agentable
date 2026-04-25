@@ -1,6 +1,6 @@
 import express from 'express'
-import { createAgentable } from '@agentable/server'
-import { expressHandler } from '@agentable/server/adapters/express'
+import { createAgentable } from '@vibeflowai/agentable-server'
+import { expressHandler } from '@vibeflowai/agentable-server/adapters/express'
 
 const app = express()
 app.use(express.json())
