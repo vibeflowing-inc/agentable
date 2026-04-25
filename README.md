@@ -2,7 +2,7 @@
 
 [![Experimental](https://img.shields.io/badge/status-experimental-orange)](#experimental-status)
 [![npm version](https://img.shields.io/npm/v/@vibeflowai/agentable-core.svg)](https://www.npmjs.com/package/@vibeflowai/agentable-core)
-[![GitHub stars](https://img.shields.io/github/stars/saquand/agentable?style=flat)](https://github.com/saquand/agentable/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/vibeflowing-inc/agentable?style=flat)](https://github.com/vibeflowing-inc/agentable/stargazers)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Join Discord](https://img.shields.io/badge/Join-Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/vibeflow)
 
