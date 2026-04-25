@@ -1,13 +1,18 @@
 # Agentable
 
-Put your app in any AI. Register actions where they already live, no refactoring needed.
-
-Want to skip setup? Start from the ready-to-run [`examples/express-react`](./examples/express-react) app and test the full round-trip in minutes.
-
+[![Experimental](https://img.shields.io/badge/status-experimental-orange)](#experimental-status)
 [![npm version](https://img.shields.io/npm/v/@agentable/core.svg)](https://www.npmjs.com/package/@agentable/core)
 [![GitHub stars](https://img.shields.io/github/stars/saquand/agentable?style=flat)](https://github.com/saquand/agentable/stargazers)
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![Join Discord](https://img.shields.io/badge/Join-Discord-5865F2?logo=discord&logoColor=white)](https://discord.gg/vibeflow)
+
+Put your app in any AI. Register actions where they already live, no refactoring needed.
+
+Want to skip setup? Start from the ready-to-run [`examples/express-react`](./examples/express-react) app and test the full round-trip in minutes.
+
+## Experimental Status
+
+Agentable is currently experimental. APIs and behavior may change between minor versions while we iterate quickly.
 
 AI agents that can "use your app" usually force you to build and maintain a separate tool layer. Agentable flips that model: register actions directly inside your React components, right next to the state they control. The agent only needs two tools, `discoverActions` and `callAction`.
 
