@@ -1,10 +1,27 @@
 {
   "name": "@agentable/core",
   "version": "0.1.0",
+  "description": "Framework-agnostic action registry and dispatcher for Agentable.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saquand/agentable.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/saquand/agentable#readme",
+  "bugs": {
+    "url": "https://github.com/saquand/agentable/issues"
+  },
+  "keywords": ["agentable", "ai", "tool-calling", "actions", "zod"],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

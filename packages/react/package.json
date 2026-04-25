@@ -1,10 +1,27 @@
 {
   "name": "@agentable/react",
   "version": "0.1.0",
+  "description": "React provider and hooks to register and execute Agentable actions.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saquand/agentable.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/saquand/agentable#readme",
+  "bugs": {
+    "url": "https://github.com/saquand/agentable/issues"
+  },
+  "keywords": ["agentable", "react", "ai", "tool-calling", "hooks"],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -19,7 +36,7 @@
   "peerDependencies": {
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
-    "@agentable/core": "workspace:*",
+    "@agentable/core": "^0.1.0",
     "zod": ">=3.0.0"
   },
   "devDependencies": {
